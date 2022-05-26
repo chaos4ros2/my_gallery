@@ -32,3 +32,25 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## Sequence diagrams
+
+```mermaid-example
+sequenceDiagram
+		%% par = Parallel（並列処理）
+    par Authentication Request
+        ユーザー ->> フロントエンド: ログイン
+    and Authentication Reponse
+        フロントエンド -->> ユーザー: 認証  
+    end
+    par File Upload Request
+        ユーザー ->> API: 画像のアップロード/上書/取消
+				par File Id Regist Request
+            API ->> RDB : ファイルIDの登録/更新/削除
+						API ->> AWS S3 : ファイルの登録/更新/削除
+        and File Id Regist Request
+            RDB -->> ユーザー: RDB更新結果
+						AWS S3 -->> ユーザー : AWS S3更新結果
+				end
+    end
+```
